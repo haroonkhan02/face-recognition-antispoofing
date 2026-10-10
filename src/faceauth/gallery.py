@@ -124,6 +124,11 @@ def lfw_open_set(root: Path = LFW_DIR, model: str = "arcface") -> dict:
         t = float(np.quantile(best_u, 1 - fpir))
         out["dir_at_fpir"][str(fpir)] = {
             "threshold": t, "dir": float(((top_k == known_id) & (best_k >= t)).mean())}
+    unknown_paths = [files[n][0] for n in single]
+    top = np.argsort(-best_u)[:8]  # the strangers that look most like someone enrolled
+    out["top_unknown_matches"] = [
+        {"probe": str(unknown_paths[i].relative_to(root / "images")),
+         "matched": multi[int(su[i].argmax())], "similarity": float(best_u[i])} for i in top]
     for label, t in (("verify_threshold", VERIFY_THRESHOLD),
                      ("identify_threshold", IDENTIFY_THRESHOLD)):
         out[label] = {"threshold": t, "dir": float(((top_k == known_id) & (best_k >= t)).mean()),
@@ -156,6 +161,10 @@ def identify_main(argv: list[str] | None = None) -> None:
         res = lfw_open_set()
         (REPORTS_DIR / "lfw").mkdir(parents=True, exist_ok=True)
         (REPORTS_DIR / "lfw" / "open_set.json").write_text(json.dumps(res, indent=1))
+        from .plots import stranger_gallery
+
+        stranger_gallery(res["top_unknown_matches"], LFW_DIR / "images",
+                         REPORTS_DIR / "lfw" / "hardest_strangers.jpg")
         print(json.dumps(res, indent=1))
         return
     gallery, embedder, detector = Gallery.load(), get_embedder("arcface"), FaceDetector()
