@@ -63,7 +63,7 @@ Gallery = first photo of each of the **1,680** people with ≥ 2 photos; **7,484
 
 ### 3 · Presentation-attack detection on CelebA-Spoof (subset)
 
-ResNet-18 (ImageNet), 128 px crops, 8 epochs (6.8 min each on MPS). Train 18,064 / validation 5,194 / **test 5,466** images (66 / 66 / 75 % attacks). The decision threshold is fixed on **validation** at its equal-error point; test is never used for tuning. APCER = attacks accepted as live, BPCER = live faces rejected.
+ResNet-18 (ImageNet), 128 px crops, 8 epochs (6.8 min per model, ~51 s per epoch, on MPS). Train 18,064 / validation 5,194 / **test 5,466** images (66 / 66 / 75 % attacks). The decision threshold is fixed on **validation** at its equal-error point; test is never used for tuning. APCER = attacks accepted as live, BPCER = live faces rejected.
 
 | Crop context (× face box) | val EER | **test EER** | test APCER @ val thr. | test BPCER @ val thr. | ACER | AUC | BPCER20 |
 |---|---|---|---|---|---|---|---|
