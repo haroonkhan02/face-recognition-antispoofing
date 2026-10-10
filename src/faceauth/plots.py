@@ -98,3 +98,33 @@ def plot_spoof(scores: np.ndarray, labels: np.ndarray, thr: float, out_dir: Path
             ax.set_xlabel("epoch")
             ax.grid(alpha=0.3)
         _save(fig, out_dir / "training_curves.png")
+
+
+def stranger_gallery(matches: list[dict], images_root: Path, path: Path, size: int = 150) -> Path:
+    """Each row: the never-enrolled 'stranger' photo next to the enrolled photo it matched."""
+    from PIL import Image, ImageDraw
+
+    rows = []
+    for m in matches:
+        probe = Image.open(images_root / m["probe"]).convert("RGB")
+        enrolled = sorted((images_root / m["matched"]).glob("*.jpg"))[0]
+        pair = [probe, Image.open(enrolled).convert("RGB")]
+        tiles = []
+        for im, text in zip(pair, (m["probe"].split("/")[0], m["matched"]), strict=True):
+            im = im.crop((50, 40, 200, 190)).resize((size, size))
+            d = ImageDraw.Draw(im)
+            d.rectangle([0, size - 14, size, size], fill=(0, 0, 0))
+            d.text((3, size - 13), text[:24], fill=(255, 255, 255))
+            tiles.append(np.asarray(im))
+        bar = np.full((size, 70, 3), 255, np.uint8)
+        img = Image.fromarray(bar)
+        ImageDraw.Draw(img).text((8, size // 2 - 6), f"{m['similarity']:.2f}", fill=(0, 0, 0))
+        rows.append(np.concatenate([tiles[0], np.asarray(img), tiles[1]], axis=1))
+    half = (len(rows) + 1) // 2
+    left = np.concatenate(rows[:half], axis=0)
+    right = np.concatenate(rows[half:] + [np.full_like(rows[0], 255)] * (half - len(rows[half:])),
+                           axis=0)
+    out = np.concatenate([left, np.full((left.shape[0], 20, 3), 255, np.uint8), right], axis=1)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    Image.fromarray(out).save(path, quality=90)
+    return path
