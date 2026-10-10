@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "face-recognition-antispoofing"
+version = "1.0.0"
+description = "Face verification and identification (YuNet detection, 5-point alignment, ArcFace / SFace embeddings) evaluated on LFW, plus a CelebA-Spoof anti-spoofing CNN with APCER/BPCER and a head-turn liveness challenge."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Muhammad Haroon Khan" }]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "numpy>=1.26",
+    "opencv-python>=4.9",
+    "onnxruntime>=1.17",
+    "pillow>=10",
+    "pyyaml>=6",
+    "tqdm>=4.66",
+    "matplotlib>=3.8",
+    "scikit-learn>=1.4",
+    "pyarrow>=15",
+    "torch>=2.2",
+    "torchvision>=0.17",
+]
+
+[project.optional-dependencies]
+demo = ["gradio>=4"]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+faceauth-download = "faceauth.download:main"
+faceauth-lfw = "faceauth.verify:main"
+faceauth-enroll = "faceauth.gallery:enroll_main"
+faceauth-identify = "faceauth.gallery:identify_main"
+faceauth-prepare-spoof = "faceauth.spoof_data:main"
+faceauth-train-spoof = "faceauth.train_spoof:main"
+faceauth-evaluate-spoof = "faceauth.evaluate_spoof:main"
+faceauth-webcam = "faceauth.app:main"
+faceauth-demo = "faceauth.demo:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
