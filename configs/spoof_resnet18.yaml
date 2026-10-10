@@ -1,0 +1,11 @@
+# CelebA-Spoof presentation-attack detector (one run per crop scale; --crop-scale overrides).
+arch: resnet18
+pretrained: true        # ImageNet weights
+crop_scale: 1.6         # face box enlarged 1.6x: keeps paper edges / screen bezels in view
+image_size: 128
+epochs: 8
+batch_size: 128
+lr: 0.001
+weight_decay: 0.0001
+label_smoothing: 0.05
+seed: 0
