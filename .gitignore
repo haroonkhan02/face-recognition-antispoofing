@@ -21,3 +21,4 @@ outputs/
 .DS_Store
 .vscode/
 .idea/
+reports/lfw/pair_scores.npz

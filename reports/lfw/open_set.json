@@ -1,0 +1,74 @@
+{
+ "model": "arcface",
+ "gallery_identities": 1680,
+ "known_probes": 7484,
+ "unknown_probes": 4069,
+ "detection_misses": 0,
+ "rank1_closed_set": 0.9953233564938535,
+ "dir_at_fpir": {
+  "0.1": {
+   "threshold": 0.28888261318206787,
+   "dir": 0.9917156600748263
+  },
+  "0.01": {
+   "threshold": 0.34262070059776306,
+   "dir": 0.9840994120791021
+  },
+  "0.001": {
+   "threshold": 0.6285302639007568,
+   "dir": 0.39925173703901656
+  }
+ },
+ "top_unknown_matches": [
+  {
+   "probe": "Carlos_Ruckauf/Carlos_Ruckauf_0001.jpg",
+   "matched": "Eduardo_Duhalde",
+   "similarity": 0.7011380195617676
+  },
+  {
+   "probe": "Sung_Hong_Choi/Sung_Hong_Choi_0001.jpg",
+   "matched": "Choi_Sung-hong",
+   "similarity": 0.6717924475669861
+  },
+  {
+   "probe": "Morgan_Hentzen/Morgan_Hentzen_0001.jpg",
+   "matched": "Claire_Hentzen",
+   "similarity": 0.651679277420044
+  },
+  {
+   "probe": "Shavon_Earp/Shavon_Earp_0001.jpg",
+   "matched": "Diana_Taurasi",
+   "similarity": 0.634314775466919
+  },
+  {
+   "probe": "Yingfan_Wang/Yingfan_Wang_0001.jpg",
+   "matched": "Wang_Yingfan",
+   "similarity": 0.630872368812561
+  },
+  {
+   "probe": "Hasan_Wirayuda/Hasan_Wirayuda_0001.jpg",
+   "matched": "Hassan_Wirajuda",
+   "similarity": 0.596429705619812
+  },
+  {
+   "probe": "Isabela_Moraes/Isabela_Moraes_0001.jpg",
+   "matched": "Carolina_Moraes",
+   "similarity": 0.5418391823768616
+  },
+  {
+   "probe": "Ashley_Olsen/Ashley_Olsen_0001.jpg",
+   "matched": "Mary-Kate_Olsen",
+   "similarity": 0.5169902443885803
+  }
+ ],
+ "verify_threshold": {
+  "threshold": 0.25,
+  "dir": 0.9943880277926243,
+  "fpir": 0.43376751044482675
+ },
+ "identify_threshold": {
+  "threshold": 0.35,
+  "dir": 0.9816942811330839,
+  "fpir": 0.007618579503563529
+ }
+}
