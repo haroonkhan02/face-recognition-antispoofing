@@ -99,3 +99,12 @@ def test_bpcer_at_apcer_and_error_gallery():
     g = error_gallery(x, np.array([1, 1, 0, 0]), np.array([0.1, 0.9, 0.8, 0.2]), 0.5, n=3,
                       size=32)
     assert g.shape == (64, 96, 3)
+
+
+def test_square_crop_stays_inside_the_photo():
+    from PIL import Image
+
+    img = Image.fromarray(np.full((100, 80, 3), 200, np.uint8))
+    crop = square_crop(img, [0, 0, 30, 30], 2.4, 32)  # box at the corner: window must shift in
+    assert crop.min() == 200  # no black padding anywhere
+    assert square_crop(img, [10, 10, 70, 90], 3.0, 32).min() == 200  # larger than the photo

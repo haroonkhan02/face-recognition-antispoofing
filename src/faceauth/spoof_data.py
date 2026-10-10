@@ -29,11 +29,18 @@ CACHE_DIR = CELEBA_SPOOF_DIR / "cache"
 
 def square_crop(img: Image.Image, box: list[int] | np.ndarray, scale: float, size: int
                 ) -> np.ndarray:
-    """Square crop centred on the box, side = scale * max(w, h); out-of-image area is mirrored
-    by PIL's edge handling (filled with black here, as the camera would not see beyond it)."""
+    """Square crop centred on the box, side = scale * max(w, h), kept *inside* the photo.
+
+    If the window would cross the image border it is shifted back in (and shrunk if it is larger
+    than the image). Padding with black instead would create a shortcut: spoof photos in this
+    data are more often framed so the window overflows, and a CNN happily learns
+    "black border = attack", which means nothing for a real camera.
+    """
     x1, y1, x2, y2 = (float(v) for v in box)
-    side = max(x2 - x1, y2 - y1) * scale
-    cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
+    width, height = img.size
+    side = min(max(x2 - x1, y2 - y1) * scale, width, height)
+    cx = min(max((x1 + x2) / 2, side / 2), width - side / 2)
+    cy = min(max((y1 + y2) / 2, side / 2), height - side / 2)
     crop = img.crop((round(cx - side / 2), round(cy - side / 2),
                      round(cx + side / 2), round(cy + side / 2)))
     return np.asarray(crop.resize((size, size), Image.BILINEAR))
@@ -100,10 +107,12 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--scales", type=float, nargs="+", default=list(SCALES))
     ap.add_argument("--splits", nargs="+", default=["train", "valid", "test"])
     args = ap.parse_args(argv)
-    summary = [prepare(s, args.scales, args.size) for s in args.splits]
-    (CACHE_DIR / "summary.json").write_text(json.dumps(summary, indent=1))
-    for s in summary:
-        print(s)
+    path = CACHE_DIR / "summary.json"
+    summary = json.loads(path.read_text()) if path.exists() else {}
+    for split in args.splits:
+        summary[split] = prepare(split, args.scales, args.size)
+        print(summary[split])
+    path.write_text(json.dumps(summary, indent=1))
 
 
 if __name__ == "__main__":
