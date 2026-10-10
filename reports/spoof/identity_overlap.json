@@ -1,0 +1,21 @@
+{
+ "train_faces": 18051,
+ "train_no_face": 13,
+ "threshold": 0.35,
+ "splits": {
+  "valid": {
+   "sampled": 2000,
+   "no_face": 1,
+   "seen_identity_share": 0.7728864432216108,
+   "median_best_similarity": 0.5005066990852356,
+   "share_above_0.6": 0.3396698349174587
+  },
+  "test": {
+   "sampled": 2000,
+   "no_face": 1,
+   "seen_identity_share": 0.2176088044022011,
+   "median_best_similarity": 0.308562308549881,
+   "share_above_0.6": 0.006003001500750375
+  }
+ }
+}

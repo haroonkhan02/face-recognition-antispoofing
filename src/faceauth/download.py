@@ -3,7 +3,7 @@
 Examples:
     faceauth-download models        # YuNet, SFace, ArcFace (buffalo_sc) -> models/  (~54 MB)
     faceauth-download lfw           # 173 MB tgz -> data/lfw/  + pairs.txt
-    faceauth-download celeba-spoof  # 11 parquet shards (~4.8 GB) -> data/celeba_spoof/
+    faceauth-download celeba-spoof  # 11 parquet shards (~4.7 GB) -> data/celeba_spoof/
 """
 
 from __future__ import annotations
